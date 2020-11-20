@@ -5,6 +5,7 @@ const path = require("path");
 
 const filePath = path.join(__dirname, "typeDefs.gql");
 const typeDefs = fs.readFileSync(filePath, "utf-8");
+const resolvers = require("./resolvers");
 
 require("dotenv").config({
   path: "variables.env",
@@ -17,6 +18,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    retryWrites: false,
   })
   .then(() => console.log("DB CONNECTED"))
   .catch((err) => console.error(err));
@@ -24,6 +26,7 @@ mongoose
 // initialize server
 const server = new ApolloServer({
   typeDefs,
+  resolvers,
   context: {
     User,
     Post,
