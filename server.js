@@ -13,7 +13,10 @@ const typeDefs = gql`
     completed: Boolean
   }
   type Query {
-    todos: [Todo]
+    getTodos: [Todo]
+  }
+  type Mutation {
+    addTodo(task: String, completed: Boolean): Todo
   }
 `;
 
@@ -21,7 +24,17 @@ const typeDefs = gql`
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    todos: () => todos,
+    getTodos: () => todos,
+  },
+  Mutation: {
+    addTodo: (_, { task, completed }) => {
+      const todo = {
+        task,
+        completed,
+      };
+      todos.push(todo);
+      return todo;
+    },
   },
 };
 
