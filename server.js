@@ -1,10 +1,16 @@
 const { ApolloServer, gql } = require("apollo-server");
+const mongoose = require("mongoose");
+require("dotenv").config({
+  path: "variables.env",
+});
 
-// mocked data
-const todos = [
-  { task: "Wash car", completed: false },
-  { task: "Clean room", completed: true },
-];
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("DB CONNECTED"))
+  .catch((err) => console.error(err));
 
 // create a type definition
 const typeDefs = gql`
@@ -15,33 +21,11 @@ const typeDefs = gql`
   type Query {
     getTodos: [Todo]
   }
-  type Mutation {
-    addTodo(task: String, completed: Boolean): Todo
-  }
 `;
-
-// Resolvers define the technique for fetching the types defined in the
-// schema. This resolver retrieves books from the "books" array above.
-const resolvers = {
-  Query: {
-    getTodos: () => todos,
-  },
-  Mutation: {
-    addTodo: (_, { task, completed }) => {
-      const todo = {
-        task,
-        completed,
-      };
-      todos.push(todo);
-      return todo;
-    },
-  },
-};
 
 // initialize server
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
 });
 
 server.listen().then(({ url }) => {
