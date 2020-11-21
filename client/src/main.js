@@ -12,7 +12,7 @@ import "@babel/polyfill";
 Vue.use(VueApollo);
 
 // Setup Apollo client
-const defaultClient = new ApolloClient({
+export const defaultClient = new ApolloClient({
   uri: "http://localhost:4000/graphql",
 });
 
