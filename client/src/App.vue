@@ -64,7 +64,7 @@
 
     <!-- App Content -->
     <main>
-      <v-container class="mt-8">
+      <v-container class="mt-12">
         <transition name="fade">
           <router-view />
         </transition>
