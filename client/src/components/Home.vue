@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import { gql } from "apollo-boost";
 import { mapGetters } from "vuex";
 
 // @ is an alias to /src
