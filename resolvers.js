@@ -1,4 +1,21 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+// function to create a Web Token
+const createToken = (user, secret, expiresIn) => {
+  // we use jwt package to generate token
+  const { username, email } = user;
+  return jwt.sign(
+    {
+      username,
+      email,
+    },
+    secret,
+    {
+      expiresIn, // how long it expires the token
+    }
+  );
+};
 
 module.exports = {
   Query: {
@@ -38,7 +55,10 @@ module.exports = {
       if (!isValidPassword) {
         throw new Error("Invalid password");
       }
-      return user;
+      // generate token long 1hour
+      return {
+        token: createToken(user, process.env.SECRET, "1hr"),
+      };
     },
     signupUser: async (_, { username, email, password }, { User }) => {
       const user = await User.findOne({
@@ -53,7 +73,10 @@ module.exports = {
         email,
         password,
       }).save();
-      return newUser;
+      // generate token long 1hour
+      return {
+        token: createToken(newUser, process.env.SECRET, "1hr"),
+      };
     },
   },
 };
