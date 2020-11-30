@@ -55,4 +55,10 @@ new Vue({
   store,
   vuetify,
   render: (h) => h(App),
+  // add lifecycle methods, created
+  created() {
+    // when app is created we execute getCurrentUser query
+    // in every page refresh
+    this.$store.dispatch("getCurrentUser");
+  },
 }).$mount("#app");

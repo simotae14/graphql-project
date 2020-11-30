@@ -31,8 +31,7 @@ mongoose
 const getUser = async (token) => {
   if (token) {
     try {
-      let user = await jwt.verify(token, process.env.SECRET);
-      console.log(user);
+      return await jwt.verify(token, process.env.SECRET);
     } catch (err) {
       throw new AuthenticatioError(
         "Your session is ended. Please sign in again."
