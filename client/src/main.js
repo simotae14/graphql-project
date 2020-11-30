@@ -14,6 +14,35 @@ Vue.use(VueApollo);
 // Setup Apollo client
 export const defaultClient = new ApolloClient({
   uri: "http://localhost:4000/graphql",
+  // include auth token with request made to backend
+  fetchOptions: {
+    credentials: "include",
+  },
+  // we send to backend using the request pty
+  request: (operation) => {
+    // if we don't have token in localStorage, add it with empty value
+    if (!localStorage.token) {
+      localStorage.setItem("token", "");
+    }
+
+    // operation adds the token to the authorization header,
+    // which is sent to backend
+    operation.setContext({
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+  },
+  onError: ({ graphQLErrors, networkError }) => {
+    if (networkError) {
+      console.log("[networkError]", networkError);
+    }
+    if (graphQLErrors) {
+      for (let err of graphQLErrors) {
+        console.dir(err);
+      }
+    }
+  },
 });
 
 const apolloProvider = new VueApollo({ defaultClient });

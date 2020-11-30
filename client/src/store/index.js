@@ -50,7 +50,9 @@ export default new Vuex.Store({
           variables: payload,
         })
         .then(({ data }) => {
-          console.log(data.signinUser);
+          //console.log(data.signinUser);
+          // save json webtoken in local storage
+          localStorage.setItem("token", data.signinUser.token);
         })
         .catch((err) => {
           console.error(err);
